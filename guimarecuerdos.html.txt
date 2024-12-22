@@ -1,0 +1,153 @@
+!DOCTYPE html
+html lang=es
+head
+  meta charset=UTF-8
+  meta name=viewport content=width=device-width, initial-scale=1.0
+  titleFeliz Cumpleaños Mafetitle
+  style
+    body {
+      font-family 'Arial, sans-serif';
+      background url('httpswww.transparenttextures.compatternsflowers.png'), linear-gradient(to right, #ff9a9e, #fad0c4);
+      text-align center;
+      padding 20px;
+    }
+    .card {
+      background #ffffff;
+      border-radius 15px;
+      box-shadow 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding 20px;
+      margin 20px auto;
+      max-width 600px;
+    }
+    h1 {
+      color #ff6b81;
+    }
+    p {
+      color #555;
+      font-size 18px;
+    }
+    input[type=file] {
+      margin 15px 0;
+    }
+    .album-container {
+      display flex;
+      flex-direction column;
+      align-items center;
+      margin-top 20px;
+    }
+    .album {
+      width 80%;
+      height 400px;
+      overflow hidden;
+      position relative;
+    }
+    .album img {
+      width 100%;
+      height 100%;
+      object-fit contain;
+      border-radius 10px;
+    }
+    .album-controls {
+      margin-top 10px;
+    }
+    .delete-btn {
+      margin-left 10px;
+      background red;
+      color white;
+      border none;
+      border-radius 50%;
+      cursor pointer;
+      padding 5px;
+    }
+    .link {
+      margin-top 20px;
+      font-size 18px;
+      color #ff6b81;
+      text-decoration none;
+    }
+  style
+head
+body
+  div class=card
+    h1Feliz Cumpleaños Mafe 🎉h1
+    pQuerida Mafe,p
+    pHoy celebramos tus 17 maravillosos años, llenos de luz y alegría. Eres una persona increíble, con un corazón bondadoso y una sonrisa que ilumina cualquier lugar. 
+       Tu familia, que te ha criado con amor y valores, debe sentirse muy orgullosa de ti. Sigue soñando en grande y persiguiendo tus metas con la pasión que te caracteriza.p
+    pQue este año esté lleno de aventuras, risas y recuerdos inolvidables. Siempre recuerda lo querida que eres. 💖p
+    pCon mucho cariño,p
+    pGuille 🌹p
+  div
+
+  div class=card
+    h2Álbum de Memorias 📸h2
+    input type=file id=fileInput accept=image multiple
+    div class=album-container
+      div id=album class=albumdiv
+      div class=album-controls
+        button id=prev⬅️button
+        button id=next➡️button
+        button id=delete class=delete-btn❌ Eliminarbutton
+      div
+    div
+  div
+
+  a class=link href=#Comparte este enlace con Mafe 🎈a
+
+  script
+    const fileInput = document.getElementById('fileInput');
+    const album = document.getElementById('album');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const deleteBtn = document.getElementById('delete');
+
+    let photos = JSON.parse(localStorage.getItem('photos'))  [];
+    let currentIndex = 0;
+
+    function displayPhoto(index) {
+      if (photos.length  0) {
+        album.innerHTML = `img src=${photos[index]} `;
+      } else {
+        album.innerHTML = 'pNo hay fotos aúnp';
+      }
+    }
+
+    function savePhotos() {
+      localStorage.setItem('photos', JSON.stringify(photos));
+    }
+
+    fileInput.addEventListener('change', (event) = {
+      const files = event.target.files;
+      for (let file of files) {
+        const reader = new FileReader();
+        reader.onload = (e) = {
+          photos.push(e.target.result);
+          savePhotos();
+          displayPhoto(currentIndex);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    prevBtn.addEventListener('click', () = {
+      currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+      displayPhoto(currentIndex);
+    });
+
+    nextBtn.addEventListener('click', () = {
+      currentIndex = (currentIndex + 1) % photos.length;
+      displayPhoto(currentIndex);
+    });
+
+    deleteBtn.addEventListener('click', () = {
+      if (photos.length  0) {
+        photos.splice(currentIndex, 1);
+        savePhotos();
+        currentIndex = Math.max(0, currentIndex - 1);
+        displayPhoto(currentIndex);
+      }
+    });
+
+    displayPhoto(currentIndex);
+  script
+body
+html
